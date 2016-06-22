@@ -1,1 +1,1 @@
-# working-days-gui
+webpack-dev-server --content-base public/
