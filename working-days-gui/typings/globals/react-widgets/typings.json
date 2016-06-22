@@ -1,0 +1,8 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/083bb57ab87130f0adc665894251be4e13d88f57/react-widgets/react-widgets.d.ts",
+    "raw": "registry:dt/react-widgets#3.2.1+20160417150457",
+    "typings": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/083bb57ab87130f0adc665894251be4e13d88f57/react-widgets/react-widgets.d.ts"
+  }
+}

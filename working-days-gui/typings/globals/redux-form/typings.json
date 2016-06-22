@@ -1,0 +1,8 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/e609b55a48c77ee8fd5cf01e6a1caf2cefbd09e5/redux-form/redux-form.d.ts",
+    "raw": "registry:dt/redux-form#4.0.3+20160614092506",
+    "typings": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/e609b55a48c77ee8fd5cf01e6a1caf2cefbd09e5/redux-form/redux-form.d.ts"
+  }
+}
