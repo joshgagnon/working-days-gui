@@ -3,5 +3,27 @@
 // Reset and dependencies
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/normalize";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/grid";
+$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/glyphicons";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/scaffolding";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/buttons";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/forms";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/input-groups";
+
+$input-border-width: 2px;
+
+@import "reactWidgets";
 
 
+
+input[type="text"], select{
+    @extend .form-control;
+}
+button{
+    @extend .btn;
+}
+
+
+button .glyphicon{
+    top: 3px;
+}

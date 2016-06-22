@@ -14,15 +14,24 @@ const actionCreator = <T>(type: string): ActionCreator<T> =>
 export const isType = <T>(action: Action<any>, actionCreator: ActionCreator<T>):
   action is Action<T> => action.type === actionCreator.type
 
-/*
+
+export type Data = {
+  amount: string;
+  scheme: string;
+  units: string;
+  region?: string;
+  start_date: string;
+  inclusion: string;
+  direction: string;
+};
+
+
 //Example action creator:
-export interface ListItem {
-  done: boolean
-  description: string
+export interface Response {
+  status: boolean
+  response: Object
 }
 
 
-export const createListItemAction =
-  actionCreator<ListItem>('CREATE_LIST_ITEM_ACTION_TYPE')
-
-  */
+export const requestResult =
+  actionCreator<Data>('REQUEST_WORKING_DAYS')

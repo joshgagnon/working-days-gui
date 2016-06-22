@@ -40,6 +40,11 @@ module.exports = {
         ]
     },
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify(DEV ? 'development' : 'production')
+            }
+        }),
         new CopyWebpackPlugin([
          { from: 'src/static', to: './' },
          ]),
@@ -59,7 +64,7 @@ module.exports = {
         !DEV ? new CleanWebpackPlugin(['public'], {
           verbose: true,
           dry: false
-        }) : function() {},
-       // new webpack.optimize.UglifyJsPlugin(),
+        }) : function(){},
+        !DEV ? new webpack.optimize.UglifyJsPlugin() : function(){},
     ]
 }
