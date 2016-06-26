@@ -8,6 +8,8 @@
     "react-redux": "registry:dt/react-redux#4.4.0+20160501125835",
     "react-widgets": "registry:dt/react-widgets#3.2.1+20160417150457",
     "redux": "registry:dt/redux#3.3.1+20160326112656",
-    "redux-form": "registry:dt/redux-form#4.0.3+20160614092506"
+    "redux-form": "registry:dt/redux-form#4.0.3+20160614092506",
+    "redux-logger": "registry:dt/redux-logger#2.6.0+20160619033847",
+    "redux-thunk": "registry:dt/redux-thunk#2.0.1+20160317120654"
   }
 }

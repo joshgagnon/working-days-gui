@@ -33,5 +33,5 @@ export interface Response {
 }
 
 
-export const requestResult =
-  actionCreator<Data>('REQUEST_WORKING_DAYS')
+export const updateResult = actionCreator<string>('UPDATE_RESULT')
+

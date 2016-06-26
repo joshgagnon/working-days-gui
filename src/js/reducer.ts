@@ -1,24 +1,19 @@
 import { combineReducers } from 'redux';
 import { Action } from './actions.ts'
-import {reducer as formReducer} from 'redux-form';
-
-export type Data = {
-  amount: number;
-  scheme: string;
-  units: string;
-  region?: string;
-  start_date: string;
-  inclusion: number;
-  direction: string;
-};
+import { reducer as formReducer} from 'redux-form';
 
 
-const requests = (state = {}, action) => {
+
+const results = (state = {result: ''}, action) => {
+    switch(action.type){
+        case 'UPDATE_RESULT':
+            return Object.assign({}, state, action.payload);
+    }
     return state;
 }
 
 const rootReducer = combineReducers({
-    requests: requests,
+    results: results,
     form: formReducer
 });
 

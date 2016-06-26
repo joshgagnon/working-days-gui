@@ -20,8 +20,8 @@ export default class DateInput extends React.Component<FieldProp, any> {
             time={false}
             value={this.props.value ? new Date(this.props.value): null }
             onChange={(date, string) => this.props.onChange(string)}
-            parse={(string) => {
-                const mo = moment(string, readFormats)
+            parse={(value) => {
+                const mo = moment(value, readFormats);
                 return mo.isValid() ? mo.toDate() : null;
                 }
             }

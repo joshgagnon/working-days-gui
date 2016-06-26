@@ -4,6 +4,8 @@ var DEV = process.env.NODE_ENV !== 'production';
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin')
+var  HtmlWebpackPlugin = require('html-webpack-plugin')
+var autoprefixer = require('autoprefixer');
 
 module.exports = {
     entry: {
@@ -24,9 +26,9 @@ module.exports = {
                 test: /\.(scss|css)$/,
                 loader: ExtractTextPlugin.extract(
                     // activate source maps via loader query
-                    'css?sourceMap!' +
-                    'sass?sourceMap' +
-                    'scss?sourceMap'
+                    'css?sourceMap' +
+                    '!sass?sourceMap' +
+                    '!postcss-loader?sourceMap'
             )
             }, {
                 test: /\.json$/, loader: "json-loader"
@@ -39,15 +41,19 @@ module.exports = {
             { test: /\.js$/, loader: "source-map-loader" }
         ]
     },
+      postcss: function() {
+        return [autoprefixer];
+      },
     plugins: [
         new webpack.DefinePlugin({
             'process.env': {
                 NODE_ENV: JSON.stringify(DEV ? 'development' : 'production')
-            }
+            },
+            DEV: DEV
         }),
-        new CopyWebpackPlugin([
+        /*new CopyWebpackPlugin([
          { from: 'src/static', to: './' },
-         ]),
+         ]),*/
         //new ExtractTextPlugin(DEV ? '[name].css' : '[name].[hash].css'),
         new ExtractTextPlugin(DEV ? '[name].css' : '[name].css'),
         new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en-nz/),
@@ -66,5 +72,13 @@ module.exports = {
           dry: false
         }) : function(){},
         !DEV ? new webpack.optimize.UglifyJsPlugin() : function(){},
+        new HtmlWebpackPlugin({
+            title: 'Working Days - Catalex®',
+            hash: true,
+            template: 'src/static/index.ejs',
+            inject: 'body'
+          })
+
+
     ]
 }
