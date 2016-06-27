@@ -12,6 +12,7 @@ module.exports = {
         app: "./src/js/app.tsx",
     },
     cache: true,
+    target: "web",
     output: {
         path:  path.resolve(__dirname, 'public'),
         //filename: DEV ? "[name].js" : "[name].[hash].js"
@@ -31,9 +32,8 @@ module.exports = {
                     '!postcss-loader?sourceMap'
             )
             }, {
-            test: /\.(png|jpg)$/,
-            loader: 'url-loader?limit=8192&name=../images/[name].[ext]'
-                //loader: "file?name=../images/[name].[ext]"
+                test: /\.(png|jpg)$/,
+                loader: 'url-loader?limit=8192&name=/images/[name].[ext]'
             }, {
                 test: /\.json$/, loader: "json-loader"
             }, , {
