@@ -92,6 +92,9 @@ label{
      color: $label-color;
      width:100%;
      text-align:center;
+     a{
+        font-weight:normal;
+     }
 }
 
 .footer {
@@ -131,6 +134,10 @@ label{
 
 .form-group{
         margin-bottom: 4px;
+}
+
+.list-group{
+        margin-top: 0;
 }
 
 .list-group-item{

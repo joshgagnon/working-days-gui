@@ -79,7 +79,8 @@ const REGIONS = {
 const USE_REGIONS = {
     'property': true,
     'land_transfer': true,
-    'transfer': true
+    'transfer': true,
+    'agreement_sale_purchase_real_estate': true
 }
 
 const STRINGS = {
@@ -111,7 +112,8 @@ const SCHEMES = {
     "land_transfer": "Land Transfer Act 1952",
     "personal_property": "Personal Property Securities Act 1999 (except ss 165, 167A, 168 and 178)",
     "personal_property_special": "Personal Property Securities Act 1999 (only for ss 165, 167A, 168 and 178)",
-    "property": "Property Law Act 2007"
+    "property": "Property Law Act 2007",
+    "resource_management": "Resource Management Act 1991"
 }
 
 const SCHEME_LINKS = {
@@ -120,15 +122,18 @@ const SCHEME_LINKS = {
     "credit_contracts": "https://browser.catalex.nz/open_definition/23990-DLM212731/",
     "district_court": "https://browser.catalex.nz/open_definition/24099-618b9f09-d1c1-47f8-8fdc-3797d010226c/",
     "goods_services": "https://browser.catalex.nz/open_definition/25220-DLM81796/",
-    "high_court": "https://browser.catalex.nz/open_definition/24099-618b9f09-d1c1-47f8-8fdc-3797d010226c/",
+    "high_court": "https://browser.catalex.nz/open_definition/24099-17db60aa-8089-4d41-8293-bccbddd0e5df/",
     "income": "https://browser.catalex.nz/open_definition/24871-DLM1522966/",
     "interpretation": "https://browser.catalex.nz/open_definition/5549-DLM31857/",
     "companies": "https://browser.catalex.nz/open_definition/25183-DLM319994/",
     "land_transfer": "https://browser.catalex.nz/open_definition/24506-DLM270010/",
     "personal_property": "https://browser.catalex.nz/open_definition/23918-DLM46184/",
     "personal_property_special": "https://browser.catalex.nz/open_definition/23918-DLM46184/",
-    "property": "https://browser.catalex.nz/open_definition/23919-DLM969109/"
+    "property": "https://browser.catalex.nz/open_definition/23919-DLM969109/",
+    "resource_management": "https://browser.catalex.nz/open_definition/24426-DLM231791/"
 }
+
+const TIME_LINK = 'https://browser.catalex.nz/open_definition/5549-DLM31857/';
 
 Object.keys(REGIONS).map(r => {
     STRINGS[r] = REGIONS[r] + ' Anniversary';
@@ -169,11 +174,13 @@ class WorkingDaysForm extends React.Component<IWorkingDaysForm, {}> {
 
     regionSelect(change) {
         const {fields: { region}} = this.props;
+        const regionKeys = Object.keys(REGIONS);
+        regionKeys.sort();
         return <div className="form-group">
             <label>Region</label>
             <select {...region} className="form-control"  onChange={change('region')}>
                 <option value="">None</option>
-                { Object.keys(REGIONS).map((r, i) => {
+                { regionKeys.map((r, i) => {
                     return <option key={i} value={r}>{ REGIONS[r] }</option>
                 }) }
             </select>
@@ -192,6 +199,8 @@ class WorkingDaysForm extends React.Component<IWorkingDaysForm, {}> {
                 submit(Object.assign({}, this.props.values, {[name]: value}));
             }
         }
+        const schemeKeys = Object.keys(SCHEMES);
+        schemeKeys.sort();
 
         return <form>
                 <div className="form-group">
@@ -231,15 +240,14 @@ class WorkingDaysForm extends React.Component<IWorkingDaysForm, {}> {
               <div className="form-group">
                 <label>Definition</label>
                 <select {...scheme} className="form-control"  onChange={change('scheme')}>
-                    { Object.keys(SCHEMES).map((s, i) => {
+                    { schemeKeys.map((s, i) => {
                         return <option key={i} value={s}>{SCHEMES[s]}</option>
                     }) }
                 </select>
               </div>
                 { USE_REGIONS[scheme.value] && this.regionSelect(change) }
-
               <div className="form-group">
-                <label>Time Period Description</label>
+              <label>Time Period Description <a href={TIME_LINK} target="_blank">?</a></label>
                <select {...inclusion} className="form-control"  onChange={change('inclusion')}>
                     <option value="0.0">Beginning At, On, or With</option>
                     <option value="0.1">Beginning From, After</option>
@@ -287,6 +295,7 @@ class WorkingDays extends React.Component<IWorkingDaysProps, any> implements IWo
 
     stats() {
         const stats = this.props.results.stats || [];
+        const count = this.props.results.days_count;
         stats.sort((a, b) => {
             if(a.count === b.count){
                 return  a.flag.localeCompare(b.flag)
@@ -300,12 +309,12 @@ class WorkingDays extends React.Component<IWorkingDaysProps, any> implements IWo
             </li>
         })
         return <div className="form-group">
+                    <label>Summary</label>
                 <ul className="list-group">
-                    <li className="list-group-item"><strong>Summary</strong></li>
                     <li  className="list-group-item">
                         <a href={SCHEME_LINKS[this.props.results.scheme]} target="_blank">Definition Explanation</a>
                     </li>
-                    <li className="list-group-item">{ Math.abs(this.props.results.days_count) } Total Days</li>
+                    { count !== undefined && <li className="list-group-item">{ Math.abs(count) } Total Days</li> }
                     { list }
                     </ul>
             </div>
@@ -318,7 +327,7 @@ class WorkingDays extends React.Component<IWorkingDaysProps, any> implements IWo
                     <WorkingDaysFormConnected submit={this.submit.bind(this)} initialValues={initialValues}/>
                     <div className="form-group">
                         <label>Result</label>
-                        <div className="form-control">{ this.props.results.result}</div>
+                        <div className="form-control"><strong>{ this.props.results.result}</strong></div>
                     </div>
                     { this.stats() }
                 </div>
