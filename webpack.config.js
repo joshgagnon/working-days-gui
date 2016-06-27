@@ -31,6 +31,10 @@ module.exports = {
                     '!postcss-loader?sourceMap'
             )
             }, {
+            test: /\.(png|jpg)$/,
+            loader: 'url-loader?limit=8192&name=../images/[name].[ext]'
+                //loader: "file?name=../images/[name].[ext]"
+            }, {
                 test: /\.json$/, loader: "json-loader"
             }, , {
                 test: /\.(svg|woff|woff2|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,    loader: "file?name=[name].[ext]"
@@ -51,9 +55,9 @@ module.exports = {
             },
             DEV: DEV
         }),
-        /*new CopyWebpackPlugin([
+        new CopyWebpackPlugin([
          { from: 'src/static', to: './' },
-         ]),*/
+         ]),
         //new ExtractTextPlugin(DEV ? '[name].css' : '[name].[hash].css'),
         new ExtractTextPlugin(DEV ? '[name].css' : '[name].css'),
         new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en-nz/),

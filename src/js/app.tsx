@@ -98,8 +98,41 @@ const STRINGS = {
     'second_jan': '2nd January'
 };
 
+const SCHEMES = {
+    "agreement_sale_purchase_real_estate": "Agreement for Sale and Purchase of Real Estate",
+    "court_of_appeal": "Court of Appeal Rules",
+    "credit_contracts": "Credit Contracts and Consumer Finance Act 2003",
+    "district_court": "District Court Rules 2014",
+    "goods_services": "Goods and Services Tax Act 1985",
+    "high_court": "High Court Rules",
+    "income": "Income Tax Act 2007",
+    "interpretation": "Interpretation Act 1999",
+    "companies": "Companies Act 1993",
+    "land_transfer": "Land Transfer Act 1952",
+    "personal_property": "Personal Property Securities Act 1999 (except ss 165, 167A, 168 and 178)",
+    "personal_property_special": "Personal Property Securities Act 1999 (only for ss 165, 167A, 168 and 178)",
+    "property": "Property Law Act 2007"
+}
+
+const SCHEME_LINKS = {
+    "agreement_sale_purchase_real_estate": "http://www.adls.org.nz/media/7487526/4002-Sale-Purchase-of-Real-Estate-Ninth-Edition-2012-3-Highlighted.pdf",
+    "court_of_appeal": "https://browser.catalex.nz/open_definition/13122-DLM95763;14882-DLM319771/",
+    "credit_contracts": "https://browser.catalex.nz/open_definition/23990-DLM212731/",
+    "district_court": "https://browser.catalex.nz/open_definition/24099-618b9f09-d1c1-47f8-8fdc-3797d010226c/",
+    "goods_services": "https://browser.catalex.nz/open_definition/25220-DLM81796/",
+    "high_court": "https://browser.catalex.nz/open_definition/24099-618b9f09-d1c1-47f8-8fdc-3797d010226c/",
+    "income": "https://browser.catalex.nz/open_definition/24871-DLM1522966/",
+    "interpretation": "https://browser.catalex.nz/open_definition/5549-DLM31857/",
+    "companies": "https://browser.catalex.nz/open_definition/25183-DLM319994/",
+    "land_transfer": "https://browser.catalex.nz/open_definition/24506-DLM270010/",
+    "personal_property": "https://browser.catalex.nz/open_definition/23918-DLM46184/",
+    "personal_property_special": "https://browser.catalex.nz/open_definition/23918-DLM46184/",
+    "property": "https://browser.catalex.nz/open_definition/23919-DLM969109/"
+}
+
 Object.keys(REGIONS).map(r => {
     STRINGS[r] = REGIONS[r] + ' Anniversary';
+
 });
 
 const fields = ['scheme', 'start_date', 'amount', 'units', 'direction', 'region', 'inclusion']
@@ -123,6 +156,7 @@ type Stat = {
 type Results = {
     result: string;
     days_count?: number;
+    scheme?: string,
     stats?: Array<Stat>
 };
 
@@ -197,20 +231,9 @@ class WorkingDaysForm extends React.Component<IWorkingDaysForm, {}> {
               <div className="form-group">
                 <label>Definition</label>
                 <select {...scheme} className="form-control"  onChange={change('scheme')}>
-                    <option value="agreement_sale_purchase_real_easte">Agreement for Sale and Purchase of Real Estate</option>
-                    <option value="court_of_appeal">Court of Appeal Rules</option>
-                    <option value="credit_contracts">Credit Contracts and Consumer Finance Act 2003</option>
-                    <option value="district_court">District Court Rules 2014</option>
-                    <option value="goods_services">Goods and Services Tax Act 1985</option>
-                    <option value="high_court">High Court Rules</option>
-                    <option value="holidays">Holidays Act 2003</option>
-                    <option value="income">Income Tax Act 2007</option>
-                    <option value="interpretation">Interpretation Act 1999</option>
-                    <option value="companies">Companies Act 1993</option>
-                    <option value="land_transfer">Land Transfer Act 1952</option>
-                    <option value="personal_property">Personal Property Securities Act 1999 (except ss 165, 167A, 168 and 178)</option>
-                    <option value="personal_property_special">Personal Property Securities Act 1999 (only for ss 165, 167A, 168 and 178)</option>
-                    <option value="property">Property Law Act 2007</option>
+                    { Object.keys(SCHEMES).map((s, i) => {
+                        return <option key={i} value={s}>{SCHEMES[s]}</option>
+                    }) }
                 </select>
               </div>
                 { USE_REGIONS[scheme.value] && this.regionSelect(change) }
@@ -255,7 +278,7 @@ class WorkingDays extends React.Component<IWorkingDaysProps, any> implements IWo
         fetchResult(Object.assign({}, data, {start_date: moment(data.start_date, ["D MMMM YYYY"]).format('YYYY-M-D'), inclusion: data.inclusion.split('.')[0]}))
             .then(response => {
                 const date = moment(response.result, "YYYY-M-D").format("D MMMM YYYY")
-                this.props.updateResult({result: date,  days_count: response.days_count, stats: response.stats})
+                this.props.updateResult({result: date,  days_count: response.days_count, stats: response.stats, scheme: data.scheme})
             })
             .catch(error => {
                 this.props.updateResult({result: 'Invalid', stats: null})
@@ -263,14 +286,13 @@ class WorkingDays extends React.Component<IWorkingDaysProps, any> implements IWo
     }
 
     stats() {
-        const stats = this.props.results.stats;
+        const stats = this.props.results.stats || [];
         stats.sort((a, b) => {
             if(a.count === b.count){
                 return  a.flag.localeCompare(b.flag)
             }
             return (a.count > b.count) ? -1 : 1
         })
-
         const list = stats.map((entry, i) => {
             const plural = entry.count > 1 ? 'Days' : 'Day';
             return <li key={i} className="list-group-item">
@@ -279,9 +301,12 @@ class WorkingDays extends React.Component<IWorkingDaysProps, any> implements IWo
         })
         return <div className="form-group">
                 <ul className="list-group">
-                <li className="list-group-item"><strong>Summary</strong></li>
+                    <li className="list-group-item"><strong>Summary</strong></li>
+                    <li  className="list-group-item">
+                        <a href={SCHEME_LINKS[this.props.results.scheme]} target="_blank">Definition Explanation</a>
+                    </li>
                     <li className="list-group-item">{ Math.abs(this.props.results.days_count) } Total Days</li>
-                        { list }
+                    { list }
                     </ul>
             </div>
     }
@@ -295,7 +320,7 @@ class WorkingDays extends React.Component<IWorkingDaysProps, any> implements IWo
                         <label>Result</label>
                         <div className="form-control">{ this.props.results.result}</div>
                     </div>
-                    { this.props.results.stats && this.stats() }
+                    { this.stats() }
                 </div>
             </div>
         </div>

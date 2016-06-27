@@ -1,10 +1,11 @@
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/variables";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/mixins";
 // Reset and dependencies
-$body-bg:  #A6171D;
-$btn-default-border: #A6171D;
-$input-border:    $btn-default-border;
-$list-group-border: $btn-default-border;
+
+
+//$btn-default-border: #A6171D;
+//$input-border:    $btn-default-border;
+//$list-group-border: $btn-default-border;
 
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/normalize";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/grid";
@@ -20,9 +21,28 @@ $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/utilities";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/responsive-utilities";
 
+@import "~catalex_shared/sass/catalex-vars";
+
+
+$header-image:url("~catalex_shared/images/hero-bg.jpg");
+$light-red: rgb(197, 27, 36);
+$label-color: $text-color;
 $input-border-width: 2px;
+$body-bg:  #fff;
+
 
 @import "reactWidgets";
+
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+  -webkit-font-smoothing: antialiased;
+}
 
 
 
@@ -43,6 +63,9 @@ button .glyphicon{
 input, textarea, select {
    appearance: none;
 }
+input[type="number"]{
+    padding-right:2px;
+}
 
 select.form-control{
       background-position:right 50%;
@@ -51,21 +74,22 @@ select.form-control{
 
 }
 
-
-
-
-html {
-  position: relative;
-  min-height: 100%;
+nav{
+    background-color: $deep-red;
+    background-image: $header-image;
+    background-repeat: no-repeat;
+    background-position: center center;
+    border: none;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+    height: 75px;
+    @media (min-width: $screen-sm-min) {
+        height: 150px;
+    }
 }
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-  -webkit-font-smoothing: antialiased;
-}
+
 
 label{
-     color:white;
+     color: $label-color;
      width:100%;
      text-align:center;
 }
@@ -76,13 +100,31 @@ label{
   width: 100%;
   /* Set the fixed height of the footer here */
   height: 60px;
-  background-color: #fff;
+    background-color: $deep-red;
+    background-image: $header-image;
+    background-repeat: no-repeat;
+    background-position: center center;
 
   .footer-bar{
     text-align: center;
-    line-height: 60px;
+    .catalex-logo{
+        background-image: url(~catalex_shared/images/law-browser-icon.png);
+        background-repeat: no-repeat;
+        width: 40px;
+        height: 40px;
+        background-size: 40px 40px;
+        margin:10px;
+        display: inline-block;
+        vertical-align: middle;
+    }
     a {
-        text-decoration:none;
+        text-decoration: none;
+        color: white;
+        line-height: 40px;
+        display: inline-block;
+        margin: 10px;
+        height: 40px;
+        vertical-align: middle;
     }
   }
 }
@@ -127,7 +169,7 @@ label{
 
 
 $calendarA: #fff;
-$calendarB: $body-bg;
+$calendarB: $light-red;
 
 .logo{
 
@@ -136,7 +178,7 @@ $calendarB: $body-bg;
 
     position: absolute;
     left: 50%;
-    top: 130px;
+    top: 110px;
     transform: translate(-50%, -50%);
 
     .ring{
@@ -163,11 +205,16 @@ $calendarB: $body-bg;
         .page {
             position: absolute;
             background-color: $calendarB;
+            background-image: $header-image;
+            background-repeat: no-repeat;
+            background-position: center center;
+
             left:16px;
             right:16px;
             bottom: 16px;
             top:44px;
             border-radius: 0 0 4px 4px;
+
             .day-wrapper{
                 position:relative;
                 padding: 8px
@@ -187,9 +234,10 @@ $calendarB: $body-bg;
 
 }
 .title{
-    margin-top: 100px;
+
     h1{
-        color:white;
+        margin-top: 0px;
+        color:$calendarB;
         text-align:center;
         span{
             display:inline-block;
@@ -202,12 +250,12 @@ $calendarB: $body-bg;
     }
 }
 
-@media (min-width: $screen-md-min){
+@media (min-width: $screen-sm-min){
     .logo{
         zoom: 1;
     }
     .title{
-        margin-top:210px;
+        margin-top:36px;
     }
 }
 
@@ -247,9 +295,11 @@ $calendarB: $body-bg;
   animation-duration: 10s;
   animation-iteration-count: infinite;
 }
+
 .ripple-out:before {
   animation-name: ripple-out;
 }
+
 @for $i from 1 through 20 {
   .ripple-out:nth-child(#{$i}):before {
     animation-delay: (1 + ($i/15))+ s
