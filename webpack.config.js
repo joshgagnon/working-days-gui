@@ -75,7 +75,9 @@ module.exports = {
           verbose: true,
           dry: false
         }) : function(){},
+
         !DEV ? new webpack.optimize.UglifyJsPlugin() : function(){},
+
         new HtmlWebpackPlugin({
             title: 'Working Days - CataLex®',
             hash: true,
