@@ -86,6 +86,7 @@ const STRINGS = {
     'xmas_ending_2nd': 'Christmas Break',
     'xmas_ending_5th': 'Christmas Break',
     'xmas_ending_15th': 'Christmas Break',
+    'xmas_starting_20th_ending_10th': 'Christmas Break',
     'easter': 'Easter',
     'weekend': 'Weekend',
     'labour': 'Labour',
