@@ -134,7 +134,7 @@ const SCHEME_LINKS = {
     "resource_management": "https://browser.catalex.nz/open_definition/24426-DLM231791/"
 }
 
-const TIME_LINK = 'https://browser.catalex.nz/open_definition/5549-DLM31857/';
+const TIME_LINK = 'https://browser.catalex.nz/open_article/instrument/DLM31881';
 
 Object.keys(REGIONS).map(r => {
     STRINGS[r] = REGIONS[r] + ' Anniversary';
@@ -252,7 +252,7 @@ class WorkingDaysForm extends React.Component<IWorkingDaysForm, {}> {
                <select {...inclusion} className="form-control"  onChange={change('inclusion')}>
                     <option value="0.0">Beginning At, On, or With</option>
                     <option value="0.1">Beginning From, After</option>
-                    <option value="0.2">Between</option>
+                    <option value="1.2">Between</option>
                     <option value="0.3">Ending Before</option>
                     <option value="0.4">Ending By, On, With, Continuing To or Until</option>
                     <option value="0.5">Within</option>
