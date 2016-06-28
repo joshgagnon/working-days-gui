@@ -63,6 +63,9 @@ button .glyphicon{
 input, textarea, select {
    appearance: none;
 }
+select::-ms-expand{
+  display:none;
+}
 input[type="number"]{
     padding-right:2px;
 }
