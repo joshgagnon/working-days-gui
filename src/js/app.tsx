@@ -64,7 +64,7 @@ const initialValues = {
 const REGIONS = {
     'wellington_anniversary': 'Wellington',
     'auckland_anniversary': 'Auckland',
-    'nelson_anniversary': 'Neslon',
+    'nelson_anniversary': 'Nelson',
     'taranaki_anniversary': 'Taranaki',
     'otago_anniversary': 'Otago',
     'southland_anniversary': 'Southland',
@@ -79,7 +79,6 @@ const REGIONS = {
 const USE_REGIONS = {
     'property': true,
     'land_transfer': true,
-    'transfer': true,
     'agreement_sale_purchase_real_estate': true
 }
 
@@ -94,6 +93,7 @@ const STRINGS = {
     'anzac': 'Anzac',
     'waitangi': 'Waitangi',
     'xmas': 'Christmas',
+    'xmas_eve': 'Christmas Eve',
     'boxing': 'Boxing',
     'new_year': 'New Years',
     'second_jan': '2nd January'
