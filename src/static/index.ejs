@@ -7,6 +7,15 @@
       type="image/png"
       href="/favicon.png">
     <title><%= htmlWebpackPlugin.options.title %></title>
+
+    <!--[if lte IE 9]>
+    <style>
+    select.form-control{
+        background-image: none;
+    }
+    </style>
+    <![endif]-->
+
   </head>
   <body>
     <nav class="navbar navbar-default">
