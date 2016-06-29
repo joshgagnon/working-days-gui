@@ -27,9 +27,9 @@ module.exports = {
                 test: /\.(scss|css)$/,
                 loader: ExtractTextPlugin.extract(
                     // activate source maps via loader query
-                    'css?sourceMap' +
-                    '!sass?sourceMap' +
-                    '!postcss-loader?sourceMap'
+                    'css?-autoprefixer&sourceMap' +
+                    '!postcss-loader?sourceMap' +
+                    '!sass?sourceMap'
             )
             }, {
                 test: /\.(png|jpg)$/,
@@ -45,9 +45,7 @@ module.exports = {
             { test: /\.js$/, loader: "source-map-loader" }
         ]
     },
-      postcss: function() {
-        return [autoprefixer];
-      },
+    postcss: [autoprefixer({browsers: ['> 0.01%', 'ie 6-10']})],
     plugins: [
         new webpack.DefinePlugin({
             'process.env': {
