@@ -92,7 +92,9 @@ const STRINGS = {
     'labour': 'Labour',
     'queens_bday': 'Queen\'s Birthday',
     'anzac': 'Anzac',
+    'anzac_mondayized': '(Mondayised) Anzac',
     'waitangi': 'Waitangi',
+    'waitangi_mondayized': '(Mondayised) Waitangi',
     'xmas': 'Christmas',
     'xmas_eve': 'Christmas Eve',
     'boxing': 'Boxing',
@@ -103,6 +105,7 @@ const STRINGS = {
 const SCHEMES = {
     "agreement_sale_purchase_real_estate": "Agreement for Sale and Purchase of Real Estate",
     "court_of_appeal": "Court of Appeal Rules",
+    "supreme_court": "Supreme Court Rules 2004",
     "credit_contracts": "Credit Contracts and Consumer Finance Act 2003",
     "district_court": "District Court Rules 2014",
     "goods_services": "Goods and Services Tax Act 1985",
@@ -120,6 +123,7 @@ const SCHEMES = {
 const SCHEME_LINKS = {
     "agreement_sale_purchase_real_estate": "http://www.adls.org.nz/media/7487526/4002-Sale-Purchase-of-Real-Estate-Ninth-Edition-2012-3-Highlighted.pdf",
     "court_of_appeal": "https://browser.catalex.nz/open_definition/13122-DLM95763;14882-DLM319771/",
+    "supreme_court": "https://browser.catalex.nz/open_definition/14407-DLM270836/",
     "credit_contracts": "https://browser.catalex.nz/open_definition/23990-DLM212731/",
     "district_court": "https://browser.catalex.nz/open_definition/24099-618b9f09-d1c1-47f8-8fdc-3797d010226c/",
     "goods_services": "https://browser.catalex.nz/open_definition/25220-DLM81796/",
