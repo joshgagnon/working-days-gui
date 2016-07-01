@@ -12,8 +12,17 @@ const results = (state = {result: ''}, action) => {
     return state;
 }
 
+const holidays = (state = {}, action) => {
+    switch(action.type){
+        case 'UPDATE_HOLIDAYS':
+            return Object.assign({}, state, action.payload);
+    }
+    return state;
+}
+
 const rootReducer = combineReducers({
     results: results,
+    holidays: holidays,
     form: formReducer
 });
 

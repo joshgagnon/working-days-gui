@@ -268,6 +268,14 @@ declare module 'react-widgets/lib/DateTimePicker' {
          * object to localize widget text and increase accessibility.
          */
         messages?: DateTimePickerMessages;
+        /**
+         * Provide a custom component to render the days of the month.
+         * The Component is provided the following props
+         * - date: a Date object for the day of the month to render
+         * - label: a formatted String of the date to render. To adjust the format of the label
+         *          string use the dateFormat prop, listed below.
+         */
+        dayComponent?: __React.ReactType;
     }
 
     interface DateTimePickerMessages {

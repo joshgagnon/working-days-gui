@@ -6,7 +6,7 @@ import { Store, createStore } from 'redux';
 import '../style/style.scss';
 import DateInput from './dateInput.tsx';
 import { reduxForm, ReduxFormProps, FormData } from 'redux-form';
-import { updateResult } from './actions.ts'
+import { updateResult, updateHolidays } from './actions.ts'
 import configureStore from './configureStore.ts';
 import * as moment from 'moment';
 
@@ -42,13 +42,27 @@ const serialize = function(obj) {
   return str.join("&");
 }
 
+const handleError = (response) => {
+    if (response.status >= 400) {
+        throw new Error("Bad response from server");
+    }
+    return response.json();
+}
+
+
+
 const fetchResult = (data) => fetch(`${API_URL}?${serialize(data)}`)
-    .then((response) => {
-        if (response.status >= 400) {
-            throw new Error("Bad response from server");
-        }
-        return response.json();
+    .then(handleError);
+
+const fetchHolidays = () => fetch(`${API_URL}/get_holidays`)
+    .then(handleError)
+    .then(response => {
+        return response.holidays.reduce((acc, h) => {
+            acc[h.day] = h.flags;
+            return acc;
+        }, {})
     })
+
 
 
 const initialValues = {
@@ -88,6 +102,8 @@ const STRINGS = {
     'xmas_ending_15th': 'Christmas Break',
     'xmas_starting_20th_ending_10th': 'Christmas Break',
     'easter': 'Easter',
+    'good_friday': 'Good Friday',
+    'easter_monday': 'Easter Monday',
     'weekend': 'Weekend',
     'labour': 'Labour',
     'queens_bday': 'Queen\'s Birthday',
@@ -101,6 +117,13 @@ const STRINGS = {
     'new_year': 'New Years',
     'second_jan': '2nd January'
 };
+
+const STRINGS_FULL = Object.assign({}, STRINGS, {
+    'xmas_ending_2nd': 'Christmas Break (Ending 2nd Jan)',
+    'xmas_ending_5th': 'Christmas Break (Ending 5th Jan)',
+    'xmas_ending_15th': 'Christmas Break (Ending 15th Jan)',
+    'xmas_starting_20th_ending_10th': 'Christmas Break (Starting 20th Dec, Ending 10th Jan)'
+});
 
 const SCHEMES = {
     "agreement_sale_purchase_real_estate": "Agreement for Sale and Purchase of Real Estate",
@@ -142,12 +165,12 @@ const TIME_LINK = 'https://browser.catalex.nz/open_article/instrument/DLM31881';
 
 Object.keys(REGIONS).map(r => {
     STRINGS[r] = REGIONS[r] + ' Anniversary';
-
 });
 
 const fields = ['scheme', 'start_date', 'amount', 'units', 'direction', 'region', 'inclusion']
 
 interface EmptyProps { }
+
 
 interface IWorkingDaysForm extends ReduxFormProps {
     submit(data: FormData);
@@ -170,8 +193,35 @@ type Results = {
     stats?: Array<Stat>
 };
 
+function joinAnd(items){
+    if(items.length === 1){
+        return items[0];
+    }
+    return `${items.slice(0, items.length-1).join(', ')} and ${items[items.length-1]}`
+}
+
+
+class Day extends React.Component<{date: Date, label: string, holidays: Object}, {}> {
+    render() {
+        const str = moment(this.props.date).format('YYYY-MM-DD');
+        let title = moment(this.props.date).format("D MMMM YYYY");
+        let classes = [];
+        if(this.props.holidays[str]){
+            title += ':\n' + [...new Set(Object.keys(this.props.holidays[str]).map(key => STRINGS_FULL[key]))].join('\n')
+            classes = Object.keys(this.props.holidays[str]);
+        }
+        return <div title={title} className={classes.join(' ')}>{ this.props.label} </div>
+    }
+}
+
+
+
+const DayConnected = connect((state: any):any => ({holidays: state.holidays}))(Day);
+
+
 interface IWorkingDaysProps {
     updateResult(results: Results);
+    updateHolidays(holidays: Object);
     results: Results;
 }
 
@@ -210,7 +260,7 @@ class WorkingDaysForm extends React.Component<IWorkingDaysForm, {}> {
         return <form>
                 <div className="form-group">
                     <label>Start Date</label>
-                    <DateInput {...start_date} onChange={change('start_date')}/>
+                    <DateInput {...start_date} onChange={change('start_date')} dayComponent={DayConnected}/>
                 </div>
                 <div>
                     <div className="col-custom col-2-5">
@@ -284,7 +334,13 @@ class WorkingDays extends React.Component<IWorkingDaysProps, any> implements IWo
     }
 
     componentDidMount() {
-        this.submit(initialValues)
+        this.submit(initialValues);
+        this.fetchHolidays();
+    }
+
+    fetchHolidays() {
+        fetchHolidays()
+            .then(holidays => this.props.updateHolidays(holidays));
     }
 
     submit(data) {
@@ -329,7 +385,7 @@ class WorkingDays extends React.Component<IWorkingDaysProps, any> implements IWo
         return <div className="container">
             <div className="row">
                 <div className="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
-                    <WorkingDaysFormConnected submit={this.submit.bind(this)} initialValues={initialValues}/>
+                    <WorkingDaysFormConnected submit={this.submit.bind(this)} initialValues={initialValues} />
                     <div className="form-group">
                         <label>Result</label>
                         <div className="form-control"><strong>{ this.props.results.result}</strong></div>
@@ -342,8 +398,9 @@ class WorkingDays extends React.Component<IWorkingDaysProps, any> implements IWo
 }
 
 
-const WorkingDaysConnected = connect((state: any):any => ({results: state.results}), {
-    updateResult: updateResult
+const WorkingDaysConnected = connect((state: any):any => ({results: state.results, holidays: state.holidays.list}), {
+    updateResult: updateResult,
+    updateHolidays: updateHolidays
 })(WorkingDays)
 
 class App extends React.Component<EmptyProps, {}> {

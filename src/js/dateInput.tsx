@@ -8,9 +8,12 @@ import { reduxForm, FieldProp } from 'redux-form'
 
 momentLocalizer(moment);
 
+interface DayComponent  {
+    dayComponent?: React.ComponentClass<any>
+}
 
 
-export default class DateInput extends React.Component<FieldProp, any> {
+export default class DateInput extends React.Component<FieldProp & DayComponent, any> {
 
     render() {
         const format="D MMMM YYYY";
@@ -25,6 +28,7 @@ export default class DateInput extends React.Component<FieldProp, any> {
                 return mo.isValid() ? mo.toDate() : null;
                 }
             }
+            dayComponent={this.props.dayComponent}
             format={format} />
     }
 }

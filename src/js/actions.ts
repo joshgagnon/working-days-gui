@@ -35,3 +35,4 @@ export interface Response {
 
 export const updateResult = actionCreator<string>('UPDATE_RESULT')
 
+export const updateHolidays = actionCreator<string>('UPDATE_HOLIDAYS')

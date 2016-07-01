@@ -100,6 +100,41 @@ label{
      }
 }
 
+.rw-calendar-grid{
+    .weekend{
+        background-color: #ffe3a4;
+    }
+
+    .xmas_ending_2nd,
+    .xmas_ending_5th,
+    .xmas_ending_15th,
+    .easter,
+    .xmas_starting_20th_ending_10th{
+        background-color: #c3f4ff;
+    }
+    .easter_monday,
+    .good_friday,
+    .labour,
+    .queens_bday,
+    .anzac,
+    .anzac_mondayized,
+    .waitangi,
+    .waitangi_mondayized,
+    .xmas,
+    .xmas_eve,
+    .boxing,
+    .new_year,
+    .second_jan{
+        background-color: #ff8484;
+    }
+
+    .rw-btn >  div:hover{
+        background-color:$gray;
+        color:#fff;
+    }
+}
+
+
 .footer {
   position: absolute;
   bottom: 0;
