@@ -276,6 +276,7 @@ declare module 'react-widgets/lib/DateTimePicker' {
          *          string use the dateFormat prop, listed below.
          */
         dayComponent?: __React.ReactType;
+        footerFormat?: string | ((day: Date) => string);
     }
 
     interface DateTimePickerMessages {

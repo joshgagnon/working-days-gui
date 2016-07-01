@@ -28,6 +28,7 @@ export default class DateInput extends React.Component<FieldProp & DayComponent,
                 return mo.isValid() ? mo.toDate() : null;
                 }
             }
+            footerFormat={format}
             dayComponent={this.props.dayComponent}
             format={format} />
     }
