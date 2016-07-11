@@ -9,7 +9,6 @@ import { reduxForm, ReduxFormProps, FormData } from 'redux-form';
 import { updateResult, updateHolidays } from './actions.ts'
 import configureStore from './configureStore.ts';
 import * as moment from 'moment';
-
 import * as fetch from 'isomorphic-fetch';
 
 const store = configureStore({});
@@ -133,6 +132,7 @@ const SCHEMES = {
     "district_court": "District Court Rules 2014",
     "goods_services": "Goods and Services Tax Act 1985",
     "high_court": "High Court Rules",
+    "high_court_special": "High Court Rules - Part 31",
     "income": "Income Tax Act 2007",
     "interpretation": "Interpretation Act 1999",
     "companies": "Companies Act 1993",
@@ -151,6 +151,7 @@ const SCHEME_LINKS = {
     "district_court": "https://browser.catalex.nz/open_definition/24099-618b9f09-d1c1-47f8-8fdc-3797d010226c/",
     "goods_services": "https://browser.catalex.nz/open_definition/25220-DLM81796/",
     "high_court": "https://browser.catalex.nz/open_definition/24099-17db60aa-8089-4d41-8293-bccbddd0e5df/",
+    "high_court_special": "https://browser.catalex.nz/open_definition/24099-DLM1820015/",
     "income": "https://browser.catalex.nz/open_definition/24871-DLM1522966/",
     "interpretation": "https://browser.catalex.nz/open_definition/5549-DLM31857/",
     "companies": "https://browser.catalex.nz/open_definition/25183-DLM319994/",

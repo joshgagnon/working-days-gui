@@ -31,7 +31,10 @@ $input-border-width: 2px;
 $body-bg:  #fff;
 
 
+
 @import "reactWidgets";
+@import "header";
+@import "footer";
 
 
 html {
@@ -77,18 +80,6 @@ input[type="number"]{
 }
 
 
-nav{
-    background-color: $deep-red;
-    background-image: $header-image;
-    background-repeat: no-repeat;
-    background-position: center center;
-    border: none;
-    text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
-    height: 75px;
-    @media (min-width: $screen-sm-min) {
-        height: 150px;
-    }
-}
 
 
 label{
@@ -135,52 +126,7 @@ label{
 }
 
 
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 60px;
-    background-color: $deep-red;
-    background-image: $header-image;
-    background-repeat: no-repeat;
-    background-position: center center;
 
-  .footer-bar{
-    text-align: center;
-    .catalex-logo{
-        background-image: url(~catalex_shared/images/law-browser-icon.png);
-        background-repeat: no-repeat;
-        width: 40px;
-        height: 40px;
-        background-size: 40px 40px;
-        margin:10px;
-        display: inline-block;
-        vertical-align: middle;
-    }
-    .browser-logo{
-        $ratio: (106/269);
-        background-image: url(~catalex_shared/images/law-browser.png);
-        background-repeat: no-repeat;
-        width: 40px / $ratio;
-        height: 40px;
-        background-size: 40px / $ratio 40px;
-        margin:10px;
-        display: inline-block;
-        vertical-align: middle;
-    }
-
-    a {
-        text-decoration: none;
-        color: white;
-        line-height: 40px;
-        display: inline-block;
-        margin: 10px;
-        height: 40px;
-        vertical-align: middle;
-    }
-  }
-}
 
 .form-group{
         margin-bottom: 4px;
