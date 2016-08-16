@@ -13,7 +13,7 @@ import * as fetch from 'isomorphic-fetch';
 
 const store = configureStore({});
 
-const API_URL = DEV  ? 'http://localhost:5000' : 'http://api.catalex.nz'
+const API_URL = DEV  ? 'http://localhost:5000' : 'https://api.catalex.nz'
 
 
 function debounce(func, wait, immediate) {
