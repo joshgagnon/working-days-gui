@@ -119,21 +119,41 @@ label{
         background-color: #ff8484;
     }
 
+    .start_date{
+        background-color:#2ead04;
+        color: white;
+        font-weight: bold;
+
+    }
+    .result_date{
+        background-color:#1d5cab;
+        color: white;
+        font-weight: bold;
+    }
+    .range{
+        background-color:#ffa602;
+    }
+
     .rw-btn >  div:hover{
         background-color:$gray;
         color:#fff;
     }
 }
 
-
+.calendar-wrapper{
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 4px;
+    margin-bottom: 4px;
+}
 
 
 .form-group{
-        margin-bottom: 4px;
+    margin-bottom: 4px;
 }
 
 .list-group{
-        margin-top: 0;
+    margin-top: 0;
 }
 
 .list-group-item{

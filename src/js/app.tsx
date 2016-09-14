@@ -4,7 +4,7 @@ import * as ReactDOM from "react-dom";
 import { Provider, connect } from 'react-redux';
 import { Store, createStore } from 'redux';
 import '../style/style.scss';
-import DateInput from './dateInput.tsx';
+import { DateInput, CalendarView } from './dateInput.tsx';
 import { reduxForm, ReduxFormProps, FormData } from 'redux-form';
 import { updateResult, updateHolidays } from './actions.ts'
 import configureStore from './configureStore.ts';
@@ -71,7 +71,6 @@ const initialValues = {
     scheme: 'interpretation',
     direction: 'positive',
     inclusion: '0.0'
-
 }
 
 const REGIONS = {
@@ -114,7 +113,10 @@ const STRINGS = {
     'xmas_eve': 'Christmas Eve',
     'boxing': 'Boxing',
     'new_year': 'New Years',
-    'second_jan': '2nd January'
+    'second_jan': '2nd January',
+    'start_date': 'Start Date',
+    'result_date': 'Result Date',
+
 };
 
 const STRINGS_FULL = Object.assign({}, STRINGS, {
@@ -191,8 +193,19 @@ type Results = {
     result: string;
     days_count?: number;
     scheme?: string,
-    stats?: Array<Stat>
+    stats?: Array<Stat>,
+    range?: any
 };
+
+type Values = {
+    scheme: string;
+    start_date: string;
+    amount: string;
+    units: string;
+    direction: string;
+    region: string;
+    inclusion: string;
+}
 
 function joinAnd(items){
     if(items.length === 1){
@@ -215,9 +228,30 @@ class Day extends React.Component<{date: Date, label: string, holidays: Object},
     }
 }
 
+class ResultDay extends React.Component<{date: Date, label: string, range: Object}, {}> {
+    render() {
+        const str = moment(this.props.date).format('YYYY-MM-DD');
+        let title = moment(this.props.date).format("D MMMM YYYY");
+        let classes = [];
+        if(this.props.range[str]){
+            const descriptors = Object.keys(this.props.range[str]).map(key => STRINGS_FULL[key]).filter(f => !!f);
+            if(descriptors.length){
+               title += ':\n' + [...descriptors].join('\n');
+            }
+
+           if(this.props.range[str].count){
+                title += '\n' + 'Day ' + this.props.range[str].count
+           }
+           classes = Object.keys(this.props.range[str]);
+        }
+        return <div title={title} className={classes.join(' ')}>{ this.props.label} </div>
+    }
+}
 
 
 const DayConnected = connect((state: any):any => ({holidays: state.holidays}))(Day);
+const ResultDayConnected = connect((state: any):any => ({range: state.results.range}))(ResultDay);
+
 
 
 interface IWorkingDaysProps {
@@ -257,7 +291,6 @@ class WorkingDaysForm extends React.Component<IWorkingDaysForm, {}> {
         }
         const schemeKeys = Object.keys(SCHEMES);
         schemeKeys.sort();
-
         return <form>
                 <div className="form-group">
                     <label>Start Date</label>
@@ -280,7 +313,7 @@ class WorkingDaysForm extends React.Component<IWorkingDaysForm, {}> {
                   <div className="col-custom col-1-5">
                     <div className="form-group">
                         <label>Amount</label>
-                        <input className="form-control" type="number" {...amount} onChange={change('amount')} />
+                        <input className="form-control" type="number" {...amount} onChange={change('amount')} min="1"/>
                     </div>
                     </div>
                     <div className="col-custom col-2-5">
@@ -302,29 +335,86 @@ class WorkingDaysForm extends React.Component<IWorkingDaysForm, {}> {
                 </select>
               </div>
                 { USE_REGIONS[scheme.value] && this.regionSelect(change) }
-              <div className="form-group">
-              <label>Time Period Description <a href={TIME_LINK} target="_blank">?</a></label>
-               <select {...inclusion} className="form-control"  onChange={change('inclusion')}>
-                    <option value="0.0">Beginning At, On, or With</option>
-                    <option value="0.1">Beginning From, After</option>
-                    <option value="1.2">Between</option>
-                    <option value="0.3">Ending Before</option>
-                    <option value="0.4">Ending By, On, With, Continuing To or Until</option>
-                    <option value="0.5">Within</option>
-               </select>
+               <div className="form-group">
+                  <label>Time Period Description <a href={TIME_LINK} target="_blank">?</a></label>
+                   <select {...inclusion} className="form-control"  onChange={change('inclusion')}>
+                        <option value="0.0">Beginning At, On, or With</option>
+                        <option value="0.1">Beginning From, After</option>
+                        <option value="1.2">Between</option>
+                        <option value="0.3">Ending Before</option>
+                        <option value="0.4">Ending By, On, With, Continuing To or Until</option>
+                        <option value="0.5">Within</option>
+                   </select>
                </div>
 
         </form>
     }
 }
 
+const validate = (values: Values) => {
+    const errors: Values = {
+        scheme: null as string,
+        start_date: null as string,
+        amount: null as string,
+        units: null as string,
+        direction: null as string,
+        region: null as string,
+        inclusion:null as string
+    };
+    if(parseInt(values.amount, 10) < 1 ){
+        errors.amount = 'Must be greater than 0'
+    }
+    return errors;
+}
+
 const WorkingDaysFormConnected = reduxForm({
   form: 'simple',
-  fields
+  fields,
+  validate
 })(WorkingDaysForm)
 
 
+const formatRange = (response, start_date: string) => {
 
+    //const results = {};
+
+    const results = (response.range || []).reduce((acc, k) => {
+        acc[k.day] = k.flags.reduce((acc, f) => {
+            acc[f] = true;
+            return acc;
+        }, {})
+        return acc;
+    }, {});
+
+    results[start_date] = {
+        "start_date": true,
+    }
+    results[response.result] = {
+        "result_date": true,
+    }
+
+    const start = moment(start_date, "YYYY-MM-DD");
+    const end = moment(response.result, "YYYY-MM-DD");
+
+    let j = 1;
+    if(start.isBefore(end)){
+        for (let m = start.add(1, 'days'), i=0; m.isBefore(end); m.add(1, 'days'), i++) {
+            const str = m.format("YYYY-MM-DD")
+            if(!results[str]){
+                results[str] = {count: j++, range: true}
+            }
+        }
+    }
+    else{
+        for (let m = start.subtract(1, 'days'), i=0; m.isAfter(end); m.subtract(1, 'days'), i++) {
+            const str = m.format("YYYY-MM-DD")
+            if(!results[str]){
+                results[str] = {count: j++, range: true}
+            }
+        }
+    }
+    return results;
+}
 
 
 class WorkingDays extends React.Component<IWorkingDaysProps, any> implements IWorkingDays {
@@ -348,7 +438,8 @@ class WorkingDays extends React.Component<IWorkingDaysProps, any> implements IWo
         fetchResult(Object.assign({}, data, {start_date: moment(data.start_date, ["D MMMM YYYY"]).format('YYYY-M-D'), inclusion: data.inclusion.split('.')[0]}))
             .then(response => {
                 const date = moment(response.result, "YYYY-M-D").format("D MMMM YYYY")
-                this.props.updateResult({result: date,  days_count: response.days_count, stats: response.stats, scheme: data.scheme})
+                this.props.updateResult({result: date,  days_count: response.days_count, stats: response.stats, scheme: data.scheme,
+                    range: formatRange(response, moment(data.start_date, ["D MMMM YYYY"]).format('YYYY-MM-DD')) })
             })
             .catch(error => {
                 this.props.updateResult({result: 'Invalid', stats: null})
@@ -371,7 +462,10 @@ class WorkingDays extends React.Component<IWorkingDaysProps, any> implements IWo
             </li>
         })
         return <div className="form-group">
-                    <label>Summary</label>
+                    { /* <label>Summary</label> */ }
+                    <div className="calendar-wrapper">
+                        <CalendarView value={this.props.results.result} dayComponent={ResultDayConnected} />
+                     </div>
                 <ul className="list-group">
                     <li  className="list-group-item">
                         <a href={SCHEME_LINKS[this.props.results.scheme]} target="_blank">Definition Explanation</a>
@@ -389,9 +483,11 @@ class WorkingDays extends React.Component<IWorkingDaysProps, any> implements IWo
                     <WorkingDaysFormConnected submit={this.submit.bind(this)} initialValues={initialValues} />
                     <div className="form-group">
                         <label>Result</label>
-                        <div className="form-control"><strong>{ this.props.results.result}</strong></div>
+                        <div className="form-control"><strong>{ this.props.results.result }</strong></div>
                     </div>
-                    { this.stats() }
+
+
+                    { this.props.results.result && this.stats() }
                 </div>
             </div>
         </div>

@@ -1,19 +1,20 @@
 /// <reference path="../../typings/globals/redux-form/index.d.ts" />
 import * as React from "react";
 import * as DateTimePicker from 'react-widgets/lib/DateTimePicker'
+import * as Calendar from 'react-widgets/lib/Calendar';
 import * as moment from 'moment';
 import * as momentLocalizer from 'react-widgets/lib/localizers/moment'
 import { reduxForm, FieldProp } from 'redux-form'
 
-
 momentLocalizer(moment);
 
 interface DayComponent  {
-    dayComponent?: React.ComponentClass<any>
+    dayComponent?: React.ComponentClass<any>;
+    value: string
 }
 
 
-export default class DateInput extends React.Component<FieldProp & DayComponent, any> {
+export class DateInput extends React.Component<FieldProp & DayComponent, any> {
 
     render() {
         const format="D MMMM YYYY";
@@ -31,5 +32,23 @@ export default class DateInput extends React.Component<FieldProp & DayComponent,
             footerFormat={format}
             dayComponent={this.props.dayComponent}
             format={format} />
+    }
+}
+
+
+
+
+export class CalendarView extends React.Component<DayComponent, any> {
+
+    render() {
+        const format="D MMMM YYYY";
+        const readFormats = [format, "D M YYYY", "D MMM YYYY", "D/M/YYYY", "D-M-YYYY"];
+        const value = moment(this.props.value, readFormats);
+        return <Calendar
+            value={value.isValid() ? value.toDate() : null}
+            onChange={() => ({})}
+            footerFormat={format}
+            dayComponent={this.props.dayComponent}
+            />
     }
 }
