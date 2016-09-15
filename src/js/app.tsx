@@ -10,6 +10,8 @@ import { updateResult, updateHolidays } from './actions.ts'
 import configureStore from './configureStore.ts';
 import * as moment from 'moment';
 import * as fetch from 'isomorphic-fetch';
+import { Tooltip, OverlayTrigger } from 'react-bootstrap';
+//import * as Overlay from 'react-bootstrap/lib/Overlay';
 
 const store = configureStore({});
 
@@ -224,7 +226,7 @@ class Day extends React.Component<{date: Date, label: string, holidays: Object},
             title += ':\n' + [...new Set(Object.keys(this.props.holidays[str]).map(key => STRINGS_FULL[key]))].join('\n')
             classes = Object.keys(this.props.holidays[str]);
         }
-        return <div title={title} className={classes.join(' ')}>{ this.props.label} </div>
+        return <div title={title} className={'day ' + classes.join(' ')}>{ this.props.label} </div>
     }
 }
 
@@ -244,7 +246,13 @@ class ResultDay extends React.Component<{date: Date, label: string, range: Objec
            }
            classes = Object.keys(this.props.range[str]);
         }
-        return <div title={title} className={classes.join(' ')}>{ this.props.label} </div>
+        const tooltip = (
+              <Tooltip id="tooltip">{title}</Tooltip>
+            )
+        return  <OverlayTrigger placement="left" overlay={tooltip}>
+                <div title={title} className={'day ' + classes.join(' ')}>
+        { this.props.label} </div>
+        </OverlayTrigger>
     }
 }
 

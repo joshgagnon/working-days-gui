@@ -31,6 +31,13 @@ $input-border-width: 2px;
 $body-bg:  #fff;
 
 
+$colour1: #a4d1ff;
+$colour2: #ff8d4c;
+$colour3: #5aab3a;
+$colour4: #f4de33;
+$colour5: #7cb4ff;
+$colour6: #3c197f;
+
 
 @import "reactWidgets";
 @import "header";
@@ -92,17 +99,16 @@ label{
 }
 
 .rw-calendar-grid{
+    .day{
+        //border: 2px solid #fff;
+        padding: 2px;
+
+    }
     .weekend{
-        background-color: #ffe3a4;
+        background-color: $colour4;
+        //border-color: $colour4;
     }
 
-    .xmas_ending_2nd,
-    .xmas_ending_5th,
-    .xmas_ending_15th,
-    .easter,
-    .xmas_starting_20th_ending_10th{
-        background-color: #c3f4ff;
-    }
     .easter_monday,
     .good_friday,
     .labour,
@@ -116,27 +122,46 @@ label{
     .boxing,
     .new_year,
     .second_jan{
-        background-color: #ff8484;
+        background-color: $colour2;
+        border-color: $colour2;
+    }
+    .xmas_ending_2nd,
+    .xmas_ending_5th,
+    .xmas_ending_15th,
+    .easter,
+    .xmas_starting_20th_ending_10th{
+        background-color:$colour1;
+        //border-color:$colour1;
     }
 
     .start_date{
-        background-color:#2ead04;
+        background-color:$colour3;
+        //border-color: $colour3;
         color: white;
         font-weight: bold;
 
     }
     .result_date{
-        background-color:#1d5cab;
+        background-color:$colour6;
+       //border-color:$colour6;
         color: white;
         font-weight: bold;
     }
     .range{
-        background-color:#ffa602;
+        //border-color:$colour5;
+        background-color:$colour5;
+        margin: 2px 0;
+        padding: 0 2px;
+        //border-top: 2px solid #fff;
+        //border-bottom: 2px solid #fff;
     }
 
     .rw-btn >  div:hover{
         background-color:$gray;
         color:#fff;
+    }
+    td > span > div{
+        transition: background-color 0.5s ease, border-color 0.5s ease;
     }
 }
 

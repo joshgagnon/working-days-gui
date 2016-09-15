@@ -89,8 +89,8 @@ $rw-version:          "4.1.0";
   margin-top: 1px;
   z-index: $zindex-popover;
   // offset for drop shadow on rw-popup
-  left:  -10px - $input-border-width;
-  right: -10px - $input-border-width;
+  left:  0; //-10px - $input-border-width;
+  right: 0; //-10px - $input-border-width;
 
   &.rw-dropup {
     top:    auto;
@@ -99,7 +99,7 @@ $rw-version:          "4.1.0";
 
   &.rw-calendar-popup {
     right: auto;
-    width: 18em; //15em; ?
+    width: 100%;
   }
 }
 
@@ -142,7 +142,6 @@ $rw-version:          "4.1.0";
       width: 100%;
       white-space: normal;
         border: none;
-
     }
   }
 }
@@ -175,8 +174,8 @@ $rw-version:          "4.1.0";
         color: $gray-light;
       }
       div{
-        padding: 0.3em 0.3em;
-            border: 2px solid white;
+        //padding: 0.3em 0.3em;
+        //border: 2px solid white;
       }
     }
   }
