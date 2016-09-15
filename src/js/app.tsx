@@ -1,3 +1,4 @@
+declare var DEV: boolean;
 import "babel-polyfill";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -11,7 +12,7 @@ import configureStore from './configureStore.ts';
 import * as moment from 'moment';
 import * as fetch from 'isomorphic-fetch';
 import { Tooltip, OverlayTrigger } from 'react-bootstrap';
-//import * as Overlay from 'react-bootstrap/lib/Overlay';
+
 
 const store = configureStore({});
 
@@ -220,38 +221,41 @@ function joinAnd(items){
 class Day extends React.Component<{date: Date, label: string, holidays: Object}, {}> {
     render() {
         const str = moment(this.props.date).format('YYYY-MM-DD');
-        let title = moment(this.props.date).format("D MMMM YYYY");
+        let title = [moment(this.props.date).format("D MMMM YYYY")];
         let classes = [];
         if(this.props.holidays[str]){
-            title += ':\n' + [...new Set(Object.keys(this.props.holidays[str]).map(key => STRINGS_FULL[key]))].join('\n')
+            title = [...title, ...new Set(Object.keys(this.props.holidays[str]).map(key => STRINGS_FULL[key]))]
             classes = Object.keys(this.props.holidays[str]);
         }
-        return <div title={title} className={'day ' + classes.join(' ')}>{ this.props.label} </div>
+        const tooltip = <Tooltip id="tooltip">{ title.map(t => <div>{t}</div>)}</Tooltip>;
+        return  <OverlayTrigger placement="top" overlay={tooltip}>
+                <div title={title} className={'day ' + classes.join(' ')}>
+                   { this.props.label} </div>
+        </OverlayTrigger>
     }
 }
 
 class ResultDay extends React.Component<{date: Date, label: string, range: Object}, {}> {
     render() {
         const str = moment(this.props.date).format('YYYY-MM-DD');
-        let title = moment(this.props.date).format("D MMMM YYYY");
+        let title = [moment(this.props.date).format("D MMMM YYYY")];
         let classes = [];
         if(this.props.range[str]){
             const descriptors = Object.keys(this.props.range[str]).map(key => STRINGS_FULL[key]).filter(f => !!f);
             if(descriptors.length){
-               title += ':\n' + [...descriptors].join('\n');
+               title = [...title, ...descriptors]
             }
 
            if(this.props.range[str].count){
-                title += '\n' + 'Day ' + this.props.range[str].count
+                title.push('Day ' + this.props.range[str].count)
            }
            classes = Object.keys(this.props.range[str]);
         }
-        const tooltip = (
-              <Tooltip id="tooltip">{title}</Tooltip>
-            )
-        return  <OverlayTrigger placement="left" overlay={tooltip}>
+        const tooltip = <Tooltip id="tooltip">{ title.map(t => <div>{t}</div>)}</Tooltip>;
+
+        return  <OverlayTrigger placement="top" overlay={tooltip}>
                 <div title={title} className={'day ' + classes.join(' ')}>
-        { this.props.label} </div>
+                   { this.props.label} </div>
         </OverlayTrigger>
     }
 }
