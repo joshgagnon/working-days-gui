@@ -94,7 +94,6 @@ const REGIONS = {
 const USE_REGIONS = {
     'property': true,
     'land_transfer': true,
-    'land_transfer_2017': true,
     'agreement_sale_purchase_real_estate': true
 }
 
