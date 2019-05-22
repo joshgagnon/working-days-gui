@@ -59,7 +59,7 @@ module.exports = {
         //new ExtractTextPlugin(DEV ? '[name].css' : '[name].[hash].css'),
         new ExtractTextPlugin(DEV ? '[name].css' : '[name].css'),
         new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en-nz/),
-        new webpack.optimize.DedupePlugin(),
+        //new webpack.optimize.DedupePlugin(),
         function() {
             if(!DEV){
                 this.plugin("done", function(stats) {

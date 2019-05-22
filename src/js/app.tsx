@@ -73,7 +73,8 @@ const initialValues = {
     units: 'working_days',
     scheme: 'interpretation',
     direction: 'positive',
-    inclusion: '0.0'
+    inclusion: '0.0',
+    mode: 'working_days'
 }
 
 const REGIONS = {
@@ -173,7 +174,7 @@ Object.keys(REGIONS).map(r => {
     STRINGS[r] = REGIONS[r] + ' Anniversary';
 });
 
-const fields = ['scheme', 'start_date', 'amount', 'units', 'direction', 'region', 'inclusion']
+const fields = ['scheme', 'start_date', 'amount', 'units', 'direction', 'region', 'inclusion', 'mode']
 
 interface EmptyProps { }
 
@@ -251,7 +252,7 @@ class ResultDay extends React.Component<{date: Date, label: string, range: Objec
            }
            classes = Object.keys(this.props.range[str]);
         }
-        const tooltip = <Tooltip id="tooltip">{ title.map(t => <div>{t}</div>)}</Tooltip>;
+        const tooltip = <Tooltip id="tooltip">{ title.map(t => <div key={t}>{t}</div>)}</Tooltip>;
 
         return  <OverlayTrigger placement="top" overlay={tooltip}>
                 <div title={title} className={'day ' + classes.join(' ')}>
@@ -290,7 +291,7 @@ class WorkingDaysForm extends React.Component<IWorkingDaysForm, {}> {
     }
 
     render() {
-        const { fields: { scheme, start_date, amount, units, direction, inclusion }, submit } = this.props;
+        const { fields: { scheme, start_date, amount, units, direction, inclusion, mode }, submit } = this.props;
 
         const change = (name) => {
             return (value) => {
@@ -338,14 +339,29 @@ class WorkingDaysForm extends React.Component<IWorkingDaysForm, {}> {
                   </div>
                   </div>
               </div>
-              <div className="form-group">
-                <label>Definition</label>
-                <select {...scheme} className="form-control"  onChange={change('scheme')}>
-                    { schemeKeys.map((s, i) => {
-                        return <option key={i} value={s}>{SCHEMES[s]}</option>
-                    }) }
-                </select>
-              </div>
+              <div>
+                <div className="col-custom col-5">
+                  <div className="form-group">
+                    <label>Definition</label>
+                    <select {...scheme} className="form-control"  onChange={change('scheme')}>
+                        { schemeKeys.map((s, i) => {
+                            return <option key={i} value={s}>{SCHEMES[s]}</option>
+                        }) }
+                    </select>
+                  </div>
+                  </div>
+
+                <div className="col-custom col-5">
+                  <div className="form-group">
+                    <label>End On</label>
+                    <select {...mode} className="form-control"  onChange={change('mode')} disabled={units.value === 'working_days'}>
+                        <option value="working_days">A Working Day</option>
+                        <option value="calendar_days">A Calendar Day</option>
+                    </select>
+                  </div>
+                  </div>
+
+                  </div>
                 { USE_REGIONS[scheme.value] && this.regionSelect(change) }
                <div className="form-group">
                   <label>Time Period Description <a href={TIME_LINK} target="_blank">?</a></label>
