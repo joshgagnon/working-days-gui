@@ -14,7 +14,7 @@
   "dependencies": {
     "babel-polyfill": "^6.3.14",
     "bluebird": "^3.1.1",
-    "catalex_shared": "github:joshgagnon/catalex_shared#52462cf",
+    "catalex_shared": "github:joshgagnon/catalex_shared",
     "clean-webpack-plugin": "^0.1.9",
     "extract-text-webpack-plugin": "^1.0.1",
     "isomorphic-fetch": "^2.2.1",
@@ -51,6 +51,6 @@
     "source-map-loader": "^0.1.5",
     "style-loader": "^0.13.0",
     "ts-loader": "^0.8.2",
-    "webpack": "^1.12.10"
+    "webpack": "^1.15.0"
   }
 }
