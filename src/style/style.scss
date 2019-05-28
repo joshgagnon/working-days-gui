@@ -99,6 +99,7 @@ label{
 }
 
 .rw-calendar-grid{
+    $flankAlpha: 0.3;
     .day{
         //border: 2px solid #fff;
         padding: 2px;
@@ -106,6 +107,9 @@ label{
     }
     .weekend{
         background-color: $colour4;
+        &.flank {
+            background-color: rgba( $colour4, $flankAlpha);
+        }         
         //border-color: $colour4;
     }
 
@@ -124,6 +128,10 @@ label{
     .second_jan{
         background-color: $colour2;
         border-color: $colour2;
+        &.flank {
+            background-color: rgba( $colour2, $flankAlpha);
+            border-color: rgba( $colour2, $flankAlpha);
+        }
     }
     .xmas_ending_2nd,
     .xmas_ending_5th,
@@ -132,6 +140,9 @@ label{
     .xmas_starting_20th_ending_10th{
         background-color:$colour1;
         //border-color:$colour1;
+        &.flank {
+            background-color: rgba( $colour1, $flankAlpha);
+        } 
     }
 
     .start_date{

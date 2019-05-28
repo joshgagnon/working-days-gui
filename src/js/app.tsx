@@ -17,6 +17,7 @@ import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 const store = configureStore({});
 
 const API_URL = DEV  ? 'http://localhost:5000' : 'https://api.catalex.nz'
+const FLANK_LENGTH = 365;
 
 
 function debounce(func, wait, immediate) {
@@ -195,12 +196,19 @@ type Stat = {
     flag: string
 };
 
+type Range = {
+    [date: string]: {
+        [string]: number | string | boolean;
+    };
+};
+
+
 type Results = {
     result: string;
     days_count?: number;
     scheme?: string,
     stats?: Array<Stat>,
-    range?: any
+    range?: Range,
 };
 
 type Values = {
@@ -211,14 +219,14 @@ type Values = {
     direction: string;
     region: string;
     inclusion: string;
-}
+};
 
 function joinAnd(items){
     if(items.length === 1){
         return items[0];
     }
     return `${items.slice(0, items.length-1).join(', ')} and ${items[items.length-1]}`
-}
+};
 
 
 class Day extends React.Component<{date: Date, label: string, holidays: Object}, {}> {
@@ -230,34 +238,38 @@ class Day extends React.Component<{date: Date, label: string, holidays: Object},
             title = [...title, ...new Set(Object.keys(this.props.holidays[str]).map(key => STRINGS_FULL[key]))]
             classes = Object.keys(this.props.holidays[str]);
         }
+
         const tooltip = <Tooltip id="tooltip">{ title.map(t => <div>{t}</div>)}</Tooltip>;
         return  <OverlayTrigger placement="top" overlay={tooltip}>
-                <div title={title} className={'day ' + classes.join(' ')}>
+                <div title={title[0]} className={'day ' + classes.join(' ')}>
                    { this.props.label} </div>
         </OverlayTrigger>
     }
 }
 
-class ResultDay extends React.Component<{date: Date, label: string, range: Object}, {}> {
+class ResultDay extends React.Component<{date: Date, label: string, range: Range}, {}> {
     render() {
         const str = moment(this.props.date).format('YYYY-MM-DD');
         let title = [moment(this.props.date).format("D MMMM YYYY")];
         let classes = [];
-        if(this.props.range[str]){
-            const descriptors = Object.keys(this.props.range[str]).map(key => STRINGS_FULL[key]).filter(f => !!f);
+        const range = this.props.range && this.props.range[str];
+
+        if(range) {
+            const descriptors = Object.keys(range).map(key => STRINGS_FULL[key]).filter(f => !!f);
             if(descriptors.length){
-               title = [...title, ...descriptors]
+               title = [...title, ...descriptors];
             }
 
-           if(this.props.range[str].count){
-                title.push('Day ' + this.props.range[str].count)
-           }
-           classes = Object.keys(this.props.range[str]);
+            if(range.count){
+                title.push('Day ' + range.count);
+            }
+            classes = Object.keys(range);
         }
+
         const tooltip = <Tooltip id="tooltip">{ title.map(t => <div key={t}>{t}</div>)}</Tooltip>;
 
         return  <OverlayTrigger placement="top" overlay={tooltip}>
-                <div title={title} className={'day ' + classes.join(' ')}>
+                <div title={title[0]} className={'day ' + classes.join(' ')}>
                    { this.props.label} </div>
         </OverlayTrigger>
     }
@@ -404,17 +416,24 @@ const WorkingDaysFormConnected = reduxForm({
 })(WorkingDaysForm)
 
 
-const formatRange = (response, start_date: string) => {
-
-    //const results = {};
-
-    const results = (response.range || []).reduce((acc, k) => {
+const formatRange = (range: Range) => {
+    return (range || []).reduce((acc, k) => {
         acc[k.day] = k.flags.reduce((acc, f) => {
             acc[f] = true;
             return acc;
         }, {})
+        if(k.flank) {
+            acc[k.day].flank = true;
+        }
         return acc;
     }, {});
+};
+
+const formatResult = (response, start_date: string) => {
+
+    //const results = {};
+
+    const results = formatRange(response.range);
 
     results[start_date] = {
         "start_date": true,
@@ -444,7 +463,7 @@ const formatRange = (response, start_date: string) => {
         }
     }
     return results;
-}
+};
 
 
 class WorkingDays extends React.Component<IWorkingDaysProps, any> implements IWorkingDays {
@@ -465,13 +484,13 @@ class WorkingDays extends React.Component<IWorkingDaysProps, any> implements IWo
     }
 
     submit(data) {
-        fetchResult(Object.assign({}, data, {start_date: moment(data.start_date, ["D MMMM YYYY"]).format('YYYY-M-D'), inclusion: data.inclusion.split('.')[0]}))
+        fetchResult(Object.assign({}, data, {flank: FLANK_LENGTH, start_date: moment(data.start_date, ["D MMMM YYYY"]).format('YYYY-M-D'), inclusion: data.inclusion.split('.')[0]}))
             .then(response => {
-                const date = moment(response.result, "YYYY-M-D").format("D MMMM YYYY")
+                const date = moment(response.result, "YYYY-M-D").format("D MMMM YYYY");
                 this.props.updateResult({result: date,  days_count: response.days_count, stats: response.stats, scheme: data.scheme,
-                    range: formatRange(response, moment(data.start_date, ["D MMMM YYYY"]).format('YYYY-MM-DD')) })
+                    range: formatResult(response, moment(data.start_date, ["D MMMM YYYY"]).format('YYYY-MM-DD')) })
             })
-            .catch(error => {
+            .catch(() => {
                 this.props.updateResult({result: 'Invalid', stats: null})
             })
     }
