@@ -368,7 +368,7 @@ class WorkingDaysForm extends React.Component<IWorkingDaysForm, {}> {
                 <div className="col-custom col-5">
                   <div className="form-group">
                     <label>End On</label>
-                    <select {...mode} className="form-control"  onChange={change('mode')} disabled={units.value === 'working_days'}>
+                    <select {...mode} className="form-control"  onChange={change('mode')} value={units.value === 'working_days' ? 'working_days' : mode.value} disabled={units.value === 'working_days'}>
                         <option value="working_days">A Working Day</option>
                         <option value="calendar_days">A Calendar Day</option>
                     </select>
@@ -429,7 +429,7 @@ const formatRange = (range: Range) => {
     }, {});
 };
 
-const formatResult = (response, start_date: string) => {
+const formatResult = (response, start_date: string, count_holidays: boolean) => {
 
     //const results = {};
 
@@ -449,16 +449,16 @@ const formatResult = (response, start_date: string) => {
     if(start.isBefore(end)){
         for (let m = start.add(1, 'days'), i=0; m.isBefore(end); m.add(1, 'days'), i++) {
             const str = m.format("YYYY-MM-DD")
-            if(!results[str]){
-                results[str] = {count: j++, range: true}
+            if(!results[str] || count_holidays){
+                results[str] = {...(results[str] || {}), count: j++, range: true}
             }
         }
     }
     else{
         for (let m = start.subtract(1, 'days'), i=0; m.isAfter(end); m.subtract(1, 'days'), i++) {
             const str = m.format("YYYY-MM-DD")
-            if(!results[str]){
-                results[str] = {count: j++, range: true}
+            if(!results[str] || count_holidays){
+                results[str] = {...(results[str] || {}), count: j++, range: true}
             }
         }
     }
@@ -488,7 +488,7 @@ class WorkingDays extends React.Component<IWorkingDaysProps, any> implements IWo
             .then(response => {
                 const date = moment(response.result, "YYYY-M-D").format("D MMMM YYYY");
                 this.props.updateResult({result: date,  days_count: response.days_count, stats: response.stats, scheme: data.scheme,
-                    range: formatResult(response, moment(data.start_date, ["D MMMM YYYY"]).format('YYYY-MM-DD')) })
+                    range: formatResult(response, moment(data.start_date, ["D MMMM YYYY"]).format('YYYY-MM-DD'), data.mode === 'calendar_days' && data.units !== 'working_days', ) })
             })
             .catch(() => {
                 this.props.updateResult({result: 'Invalid', stats: null})
