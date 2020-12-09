@@ -147,7 +147,8 @@ const SCHEMES = {
     "personal_property": "Personal Property Securities Act 1999 (except ss 165, 167A, 168 and 178)",
     "personal_property_special": "Personal Property Securities Act 1999 (only for ss 165, 167A, 168 and 178)",
     "property": "Property Law Act 2007",
-    "resource_management": "Resource Management Act 1991"
+    "resource_management": "Resource Management Act 1991",
+    "official_information_act": "Official Information Act 1982"
 }
 
 const SCHEME_LINKS = {
@@ -167,7 +168,8 @@ const SCHEME_LINKS = {
     "personal_property": "https://browser.catalex.nz/open_definition/23918-DLM46184/",
     "personal_property_special": "https://browser.catalex.nz/open_definition/23918-DLM46184/",
     "property": "https://browser.catalex.nz/open_definition/23919-DLM969109/",
-    "resource_management": "https://browser.catalex.nz/open_definition/24426-DLM231791/"
+    "resource_management": "https://browser.catalex.nz/open_definition/24426-DLM231791/",
+    "official_information_act": "https://browser.catalex.nz/open_article/instrument/DLM64784"
 }
 
 const TIME_LINK = 'https://browser.catalex.nz/open_article/instrument/DLM31881';
