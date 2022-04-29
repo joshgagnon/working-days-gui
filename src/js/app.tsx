@@ -114,6 +114,7 @@ const STRINGS = {
     'anzac_mondayized': '(Mondayised) Anzac',
     'waitangi': 'Waitangi',
     'waitangi_mondayized': '(Mondayised) Waitangi',
+    'matariki': 'Matariki',
     'xmas': 'Christmas',
     'xmas_eve': 'Christmas Eve',
     'boxing': 'Boxing',
