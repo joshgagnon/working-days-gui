@@ -109,7 +109,7 @@ const STRINGS = {
     'easter_monday': 'Easter Monday',
     'weekend': 'Weekend',
     'labour': 'Labour',
-    'queens_bday': 'Queen\'s Birthday',
+    'queens_bday': 'King\'s Birthday',
     'anzac': 'Anzac',
     'anzac_mondayized': '(Mondayised) Anzac',
     'waitangi': 'Waitangi',
