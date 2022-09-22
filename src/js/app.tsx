@@ -115,6 +115,7 @@ const STRINGS = {
     'waitangi': 'Waitangi',
     'waitangi_mondayized': '(Mondayised) Waitangi',
     'matariki': 'Matariki',
+    'queen_memorial': 'Queen Elizabeth II Memorial Day',
     'xmas': 'Christmas',
     'xmas_eve': 'Christmas Eve',
     'boxing': 'Boxing',
