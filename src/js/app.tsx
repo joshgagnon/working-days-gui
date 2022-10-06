@@ -143,7 +143,7 @@ const SCHEMES = {
     "high_court": "High Court Rules",
     "high_court_special": "High Court Rules - Part 31",
     "income": "Income Tax Act 2007",
-    "interpretation": "Interpretation Act 1999",
+    "interpretation": "Legislation Act 2019",
     "companies": "Companies Act 1993",
     "land_transfer": "Land Transfer Act 1952",
     "land_transfer_2017": "Land Transfer Act 2017",
@@ -164,7 +164,7 @@ const SCHEME_LINKS = {
     "high_court": "https://browser.catalex.nz/open_definition/27924-DLM1818536/",
     "high_court_special": "https://browser.catalex.nz/open_definition/27924-DLM1820015/",
     "income": "https://browser.catalex.nz/open_definition/24871-DLM1522966/",
-    "interpretation": "https://browser.catalex.nz/open_definition/5549-DLM31857/",
+    "interpretation": "https://browser.catalex.nz/open_article/instrument/DLM7298256/",
     "companies": "https://browser.catalex.nz/open_definition/25183-DLM319994/",
     "land_transfer": "https://browser.catalex.nz/open_definition/24506-DLM270010/",
     "land_transfer_2017": "https://browser.catalex.nz/open_definition/33693-DLM6731108/",
@@ -175,7 +175,7 @@ const SCHEME_LINKS = {
     "official_information_act": "https://browser.catalex.nz/open_article/instrument/DLM64784"
 }
 
-const TIME_LINK = 'https://browser.catalex.nz/open_article/instrument/DLM31881';
+const TIME_LINK = 'https://browser.catalex.nz/open_article/instrument/LMS39272';
 
 Object.keys(REGIONS).map(r => {
     STRINGS[r] = REGIONS[r] + ' Anniversary';
