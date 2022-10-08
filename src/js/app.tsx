@@ -72,7 +72,7 @@ const initialValues = {
     start_date: moment(new Date()).format("D MMMM YYYY"),
     amount: 1,
     units: 'working_days',
-    scheme: 'interpretation',
+    scheme: 'legislation',
     direction: 'positive',
     inclusion: '0.0',
     mode: 'working_days'
@@ -95,12 +95,15 @@ const REGIONS = {
 
 const USE_REGIONS = {
     'property': true,
-    'land_transfer': true,
+    'court_of_appeal': true,
+    'district_court': true,
     'agreement_sale_purchase_real_estate': true
 }
 
 const STRINGS = {
     'xmas_ending_2nd': 'Christmas Break',
+    'xmas_ending_2nd_mondayized': 'Christmas Break',
+    'xmas_ending_2nd_tuesdayized': 'Christmas Break',
     'xmas_ending_5th': 'Christmas Break',
     'xmas_ending_15th': 'Christmas Break',
     'xmas_starting_20th_ending_10th': 'Christmas Break',
@@ -111,9 +114,9 @@ const STRINGS = {
     'labour': 'Labour',
     'queens_bday': 'King\'s Birthday',
     'anzac': 'Anzac',
-    'anzac_mondayized': '(Mondayised) Anzac',
+    'anzac_mondayized': 'Anzac (Mondayised)',
     'waitangi': 'Waitangi',
-    'waitangi_mondayized': '(Mondayised) Waitangi',
+    'waitangi_mondayized': 'Waitangi (Mondayised)',
     'matariki': 'Matariki',
     'queen_memorial': 'Queen Elizabeth II Memorial',
     'xmas': 'Christmas',
@@ -128,6 +131,8 @@ const STRINGS = {
 
 const STRINGS_FULL = Object.assign({}, STRINGS, {
     'xmas_ending_2nd': 'Christmas Break (Ending 2nd Jan)',
+    'xmas_ending_2nd_mondayized': 'Christmas Break (Ending 2nd Jan, Moved To Monday)',
+    'xmas_ending_2nd_tuesdayized': 'Christmas Break (Ending 2nd Jan, Moved To Tuesday)',
     'xmas_ending_5th': 'Christmas Break (Ending 5th Jan)',
     'xmas_ending_15th': 'Christmas Break (Ending 15th Jan)',
     'xmas_starting_20th_ending_10th': 'Christmas Break (Starting 20th Dec, Ending 10th Jan)'
@@ -141,11 +146,9 @@ const SCHEMES = {
     "district_court": "District Court Rules 2014",
     "goods_services": "Goods and Services Tax Act 1985",
     "high_court": "High Court Rules",
-    "high_court_special": "High Court Rules - Part 31",
     "income": "Income Tax Act 2007",
-    "interpretation": "Legislation Act 2019",
+    "legislation": "Legislation Act 2019",
     "companies": "Companies Act 1993",
-    "land_transfer": "Land Transfer Act 1952",
     "land_transfer_2017": "Land Transfer Act 2017",
     "personal_property": "Personal Property Securities Act 1999 (except ss 165, 167A, 168 and 178)",
     "personal_property_special": "Personal Property Securities Act 1999 (only for ss 165, 167A, 168 and 178)",
@@ -154,25 +157,24 @@ const SCHEMES = {
     "official_information_act": "Official Information Act 1982"
 }
 
+
 const SCHEME_LINKS = {
-    "agreement_sale_purchase_real_estate": "http://www.adls.org.nz/media/7487526/4002-Sale-Purchase-of-Real-Estate-Ninth-Edition-2012-3-Highlighted.pdf",
-    "court_of_appeal": "https://browser.catalex.nz/open_definition/13122-DLM95763;14882-DLM319771/",
+   // "agreement_sale_purchase_real_estate": "http://www.adls.org.nz/media/7487526/4002-Sale-Purchase-of-Real-Estate-Ninth-Edition-2012-3-Highlighted.pdf",
+    "court_of_appeal": "https://browser.catalex.nz/open_definition/40052-DLM5759306/",
     "supreme_court": "https://browser.catalex.nz/open_definition/14407-DLM270836/",
-    "credit_contracts": "https://browser.catalex.nz/open_definition/23990-DLM212731/",
-    "district_court": "https://browser.catalex.nz/open_definition/27924-618b9f09-d1c1-47f8-8fdc-3797d010226c/",
-    "goods_services": "https://browser.catalex.nz/open_definition/25220-DLM81796/",
-    "high_court": "https://browser.catalex.nz/open_definition/27924-DLM1818536/",
-    "high_court_special": "https://browser.catalex.nz/open_definition/27924-DLM1820015/",
-    "income": "https://browser.catalex.nz/open_definition/24871-DLM1522966/",
-    "interpretation": "https://browser.catalex.nz/open_article/instrument/DLM7298256/",
-    "companies": "https://browser.catalex.nz/open_definition/25183-DLM319994/",
-    "land_transfer": "https://browser.catalex.nz/open_definition/24506-DLM270010/",
-    "land_transfer_2017": "https://browser.catalex.nz/open_definition/33693-DLM6731108/",
-    "personal_property": "https://browser.catalex.nz/open_definition/23918-DLM46184/",
-    "personal_property_special": "https://browser.catalex.nz/open_definition/23918-DLM46184/",
-    "property": "https://browser.catalex.nz/open_definition/23919-DLM969109/",
-    "resource_management": "https://browser.catalex.nz/open_definition/24426-DLM231791/",
-    "official_information_act": "https://browser.catalex.nz/open_article/instrument/DLM64784"
+    "district_court": "https://browser.catalex.nz/open_definition/39694-DLM6942271/",
+    "credit_contracts": "https://browser.catalex.nz/open_definition/41711-DLM212731/",
+    "goods_services": "https://browser.catalex.nz/open_definition/39778-DLM81796/",
+    "high_court": "https://browser.catalex.nz/open_definition/39820-DLM6951185/",
+    "income": "https://browser.catalex.nz/open_definition/39839-DLM1522966/",
+    "legislation": "https://browser.catalex.nz/open_definition/39879-DLM7298257/",
+    "companies": "https://browser.catalex.nz/open_definition/39619-DLM319994/",
+    "land_transfer_2017": "https://browser.catalex.nz/open_definition/42414-DLM6731108/",
+    "personal_property": "https://browser.catalex.nz/open_definition/39980-DLM46184/",
+    "personal_property_special": "https://browser.catalex.nz/open_definition/39980-DLM46184/",
+    "property": "https://browser.catalex.nz/open_definition/39995-DLM969109/",
+    "resource_management": "https://browser.catalex.nz/open_definition/42982-DLM231791/",
+    "official_information_act": "https://browser.catalex.nz/open_definition/39957-DLM65349/"
 }
 
 const TIME_LINK = 'https://browser.catalex.nz/open_article/instrument/LMS39272';
@@ -520,9 +522,9 @@ class WorkingDays extends React.Component<IWorkingDaysProps, any> implements IWo
                         <CalendarView value={this.props.results.result} dayComponent={ResultDayConnected} />
                      </div>
                 <ul className="list-group">
-                    <li  className="list-group-item">
+                    { SCHEME_LINKS[this.props.results.scheme] &&  <li  className="list-group-item">
                         <a href={SCHEME_LINKS[this.props.results.scheme]} target="_blank">Definition Explanation</a>
-                    </li>
+                    </li> }
                     { count !== undefined && <li className="list-group-item">{ Math.abs(count) } Total Days</li> }
                     { list }
                     </ul>
