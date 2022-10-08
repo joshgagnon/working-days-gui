@@ -101,12 +101,12 @@ const USE_REGIONS = {
 }
 
 const STRINGS = {
-    'xmas_ending_2nd': 'Christmas Break',
-    'xmas_ending_2nd_mondayized': 'Christmas Break',
-    'xmas_ending_2nd_tuesdayized': 'Christmas Break',
-    'xmas_ending_5th': 'Christmas Break',
-    'xmas_ending_15th': 'Christmas Break',
-    'xmas_starting_20th_ending_10th': 'Christmas Break',
+    'xmas_ending_2nd': 'Christmas Break (Ending 2nd Jan)',
+    'xmas_ending_2nd_mondayized': 'Christmas Break (Ending 2nd Jan, Moved To Monday)',
+    'xmas_ending_2nd_tuesdayized': 'Christmas Break (Ending 2nd Jan, Moved To Tuesday)',
+    'xmas_ending_5th': 'Christmas Break (Ending 5th Jan)',
+    'xmas_ending_15th': 'Christmas Break (Ending 15th Jan)',
+    'xmas_starting_20th_ending_10th': 'Christmas Break  (Ending 10th Jan)',
     'easter': 'Easter',
     'good_friday': 'Good Friday',
     'easter_monday': 'Easter Monday',
